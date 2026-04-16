@@ -1,0 +1,41 @@
+CREATE TABLE `medicationCollectionStation` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`prescriptionId` int NOT NULL,
+	`patientId` int NOT NULL,
+	`clinicId` int NOT NULL,
+	`status` enum('awaiting_arrival','patient_arrived','verified','preparing','ready_for_collection','collected','cancelled') NOT NULL DEFAULT 'awaiting_arrival',
+	`ticketNumber` varchar(50),
+	`patientIdVerified` boolean DEFAULT false,
+	`verifiedAt` timestamp,
+	`verifiedBy` int,
+	`preparationStartedAt` timestamp,
+	`readyForCollectionAt` timestamp,
+	`collectedAt` timestamp,
+	`estimatedWaitTime` int,
+	`actualWaitTime` int,
+	`pharmacistInstructions` text,
+	`redirectedToClinicId` int,
+	`redirectReason` varchar(200),
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `medicationCollectionStation_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `vitalSignsChecklist` (
+	`id` int AUTO_INCREMENT NOT NULL,
+	`queueId` int NOT NULL,
+	`patientId` int NOT NULL,
+	`clinicId` int NOT NULL,
+	`vitalType` enum('blood_pressure','temperature','heart_rate','respiratory_rate','weight','height','hiv_aids_test','oxygen_saturation') NOT NULL,
+	`status` enum('pending','in_progress','completed','cancelled') NOT NULL DEFAULT 'pending',
+	`assignedNurseId` int,
+	`assignedRoom` varchar(50),
+	`value` varchar(100),
+	`unit` varchar(20),
+	`notes` text,
+	`startedAt` timestamp,
+	`completedAt` timestamp,
+	`createdAt` timestamp NOT NULL DEFAULT (now()),
+	`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,
+	CONSTRAINT `vitalSignsChecklist_id` PRIMARY KEY(`id`)
+);
